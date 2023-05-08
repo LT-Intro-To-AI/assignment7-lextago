@@ -39,9 +39,9 @@ voter_opinion = [
 
 von = NeuralNet(5, 10, 1)
 
-von.train(voter_opinion)
+# von.train(voter_opinion)
 
-print(von.test_with_expected(voter_opinion))
+# print(von.test_with_expected(voter_opinion))
 
 
 test_data = [
@@ -52,8 +52,8 @@ test_data = [
     ([.9, .8, .8, .3, .6])
 ]
 
-print(von.evaluate(test_data[0]))
-print(von.evaluate(test_data[1]))
-print(von.evaluate(test_data[2]))
-print(von.evaluate(test_data[3]))
-print(von.evaluate(test_data[4]))
+# print(von.evaluate(test_data[0]))
+# print(von.evaluate(test_data[1]))
+# print(von.evaluate(test_data[2]))
+# print(von.evaluate(test_data[3]))
+# print(von.evaluate(test_data[4]))
