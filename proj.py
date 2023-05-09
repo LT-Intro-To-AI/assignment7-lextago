@@ -1,6 +1,8 @@
 from neural_net_UCI_data import normalize
 from neural import *
 import pandas as pd
+from sklearn.metrics import accuracy_score
+from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 
 #1: parse through
@@ -22,13 +24,16 @@ def parse_line(line: str) -> Tuple[List[float], List[float]]:
 with open("zoo_animals.txt", "r") as f:
     training_data = [parse_line(line) for line in f.readlines()]
 
-# x = data[["hair", "feathers", "eggs", "milk", "airborne", "aquatic", "predator", "toothed", "backbone", "breathes", "venomous", "fins", "legs", "tail", "domestic"]].values
-# y = data["class_type"].values
-
-
-#2a: normalize
+#2a: normalize and split into x and y
 
 td = normalize(training_data)
+
+td_x = []
+td_y = []
+
+for i in range(len(td)):
+    td_x.append(td[i][0])
+    td_y.append(td[i][1])
 
 
 #6: create neuralnet
@@ -37,32 +42,29 @@ zoo_neural = NeuralNet(16, 3, 1)
 
 #7: test_train_split if possible
 
-x_train, x_test, y_train, y_test = train_test_split(td[0], td[1])
+x_train, x_test, y_train, y_test = train_test_split(td_x, td_y)
 
 #8: train training data
 
-# zoo_train = []
+zoo_train = []
 
-# for x in range(len(x_train)):
-#     set = (x_train[x].tolist(),[y_train[x]])
-#     zoo_train.append(set)
+for x in range(len(x_train)):
+    set = (x_train[x],y_train[x])
+    zoo_train.append(set)
 
-# zoo_neural.train( zoo_train )
+zoo_neural.train(zoo_train, iters=10000, print_interval=1000, learning_rate=0.1)
 
 #9: test testing data
 
-# zoo_test = []
+zoo_test = []
 
-# for x in range(len(x_test)):
-#     set = (x_test[x].tolist(), [y_test[x]])
-#     zoo_test.append(set)
-
-# print(zoo_neural.test_with_expected(zoo_test))
+for x in range(len(x_test)):
+    set = (x_test[x], y_test[x])
+    zoo_test.append(set)
 
 #10: find the accuracy, is there a way?
 
+test_with_expected = zoo_neural.test_with_expected(zoo_test)
 
-
-
-
-
+for i in test_with_expected:
+    print("Expected: " , i[1][0] , " | Actual: " , round(i[2][0], 2))
